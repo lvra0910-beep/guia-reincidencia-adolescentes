@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Semáforo de Riesgo de Reincidencia</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        header p {
+            max-width: 800px;
+            margin: auto;
+            line-height: 1.5;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .introduccion {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .introduccion h2 {
+            margin-bottom: 12px;
+        }
+
+        .factor {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .factor h2 {
+            margin-bottom: 10px;
+        }
+
+        .factor p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .opciones {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .opciones button {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .bajo {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .medio {
+            background-color: #facc15;
+            color: #222;
+        }
+
+        .alto {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .opciones button:hover {
+            transform: scale(1.03);
+            opacity: 0.9;
+        }
+
+        .opciones button.seleccionado {
+            outline: 4px solid #111827;
+        }
+
+        .resultado {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .semaforo {
+            margin: 20px auto;
+            width: 100px;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 50px;
+        }
+
+        .luz {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            margin: 10px auto;
+            opacity: 0.25;
+        }
+
+        .luz.activa {
+            opacity: 1;
+        }
+
+        .luz-roja {
+            background-color: red;
+        }
+
+        .luz-amarilla {
+            background-color: yellow;
+        }
+
+        .luz-verde {
+            background-color: limegreen;
+        }
+
+        #nivel {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px;
+        }
+
+        #recomendacion {
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        .boton-reset {
+            margin-top: 25px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1f2937;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .boton-reset:hover {
+            background-color: #374151;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            background-color: #1f2937;
+            color: white;
+            font-size: 14px;
+        }
+
+        .nota {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .opciones {
+                flex-direction: column;
+            }
+
+            .opciones button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>Semáforo de Riesgo de Reincidencia</h1>
+
+    <p>
+        Herramienta de apoyo para la identificación preventiva
+        de factores asociados al riesgo de reincidencia en adolescentes.
+    </p>
+
+</header>
+
+
+<div class="contenedor">
+
+    <section class="introduccion">
+
+        <h2>¿Cómo funciona?</h2>
+
+        <p>
+            Seleccione el nivel identificado para cada factor.
+            Al finalizar, la herramienta mostrará un nivel general
+            de riesgo y una recomendación de intervención.
+        </p>
+
+        <p class="nota">
+            Esta herramienta tiene carácter orientativo y no sustituye
+            la valoración profesional o institucional del caso.
+        </p>
+
+    </section>
+
+
+    <!-- FACTOR 1 -->
+
+    <section class="factor">
+
+        <h2>1. Entorno educativo</h2>
+
+        <p>
+            Evalúa aspectos relacionados con la permanencia,
+            participación y situación educativa del adolescente.
+        </p>
+
+        <div class="opciones">
+
+            <button class="bajo" onclick="seleccionar(this, 'educativo', 1)">
+                🟢 Bajo
+            </button>
+
+            <button class="medio" onclick="seleccionar(this, 'educativo', 2)">
+                🟡 Medio
+            </button>
+
+            <button class="alto" onclick="seleccionar(this, 'educativo', 3)">
+                🔴 Alto
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FACTOR 2 -->
+
+    <section class="factor">
+
+        <h2>2. Consumo de sustancias psicoactivas (SPA)</h2>
+
+        <p>
+            Clasifique el nivel de riesgo relacionado con la presencia
+            de factores asociados al consumo de sustancias psicoactivas.
+        </p>
+
+        <div class="opciones">
+
+            <button class="bajo" onclick="seleccionar(this, 'spa', 1)">
+                🟢 Bajo
+            </button>
+
+            <button class="medio" onclick="seleccionar(this, 'spa', 2)">
+                🟡 Medio
+            </button>
+
+            <button class="alto" onclick="seleccionar(this, 'spa', 3)">
+                🔴 Alto
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FACTOR 3 -->
+
+    <section class="factor">
+
+        <h2>3. Dinámicas familiares y cuidado</h2>
+
+        <p>
+            Considere aspectos como supervisión, violencia intrafamiliar,
+            abandono, negligencia y acompañamiento familiar.
+        </p>
+
+        <div class="opciones">
+
+            <button class="bajo" onclick="seleccionar(this, 'familia', 1)">
+                🟢 Bajo
+            </button>
+
+            <button class="medio" onclick="seleccionar(this, 'familia', 2)">
+                🟡 Medio
+            </button>
+
+            <button class="alto" onclick="seleccionar(this, 'familia', 3)">
+                🔴 Alto
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FACTOR 4 -->
+
+    <section class="factor">
+
+        <h2>4. Contexto territorial y vulnerabilidad social</h2>
+
+        <p>
+            Considere condiciones de vulnerabilidad social, exclusión,
+            pobreza, influencia de pares y exposición a entornos de riesgo.
+        </p>
+
+        <div class="opciones">
+
+            <button class="bajo" onclick="seleccionar(this, 'territorio', 1)">
+                🟢 Bajo
+            </button>
+
+            <button class="medio" onclick="seleccionar(this, 'territorio', 2)">
+                🟡 Medio
+            </button>
+
+            <button class="alto" onclick="seleccionar(this, 'territorio', 3)">
+                🔴 Alto
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FACTOR 5 -->
+
+    <section class="factor">
+
+        <h2>5. Salud mental</h2>
+
+        <p>
+            Clasifique el nivel de riesgo relacionado con las condiciones
+            de salud mental identificadas durante la valoración.
+        </p>
+
+        <div class="opciones">
+
+            <button class="bajo" onclick="seleccionar(this, 'salud', 1)">
+                🟢 Bajo
+            </button>
+
+            <button class="medio" onclick="seleccionar(this, 'salud', 2)">
+                🟡 Medio
+            </button>
+
+            <button class="alto" onclick="seleccionar(this, 'salud', 3)">
+                🔴 Alto
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULTADO -->
+
+    <section class="resultado">
+
+        <h2>Resultado de la valoración</h2>
+
+        <div class="semaforo">
+
+            <div id="luz-roja" class="luz luz-roja"></div>
+
+            <div id="luz-amarilla" class="luz luz-amarilla"></div>
+
+            <div id="luz-verde" class="luz luz-verde"></div>
+
+        </div>
+
+
+        <div id="nivel">
+            Seleccione todos los factores
+        </div>
+
+
+        <p id="recomendacion">
+            Complete la valoración para obtener una recomendación.
+        </p>
+
+
+        <button class="boton-reset" onclick="reiniciar()">
+            Reiniciar valoración
+        </button>
+
+    </section>
+
+</div>
+
+
+<footer>
+
+    <p>
+        Proyecto de criminalística preventiva
+    </p>
+
+    <p>
+        Herramienta orientativa para la identificación de factores de riesgo.
+    </p>
+
+</footer>
+
+
+<script>
+
+    let factores = {
+        educativo: 0,
+        spa: 0,
+        familia: 0,
+        territorio: 0,
+        salud: 0
+    };
+
+
+    function seleccionar(boton, factor, valor) {
+
+        factores[factor] = valor;
+
+
+        // Quitar selección de los botones del mismo factor
+
+        const botones = boton.parentElement.querySelectorAll("button");
+
+        botones.forEach(function(b) {
+
+            b.classList.remove("seleccionado");
+
+        });
+
+
+        // Marcar botón seleccionado
+
+        boton.classList.add("seleccionado");
+
+
+        calcularResultado();
+
+    }
+
+
+    function calcularResultado() {
+
+        const valores = Object.values(factores);
+
+
+        // Verificar que todos los factores hayan sido seleccionados
+
+        if (valores.includes(0)) {
+
+            document.getElementById("nivel").innerText =
+                "Seleccione todos los factores";
+
+            document.getElementById("recomendacion").innerText =
+                "Debe clasificar los cinco factores para obtener el resultado.";
+
+            return;
+
+        }
+
+
+        /*
+            Se toma como resultado general
+            el nivel de mayor riesgo encontrado.
+        */
+
+        const mayorRiesgo = Math.max(...valores);
+
+
+        // Apagar todas las luces
+
+        document.getElementById("luz-roja").classList.remove("activa");
+
+        document.getElementById("luz-amarilla").classList.remove("activa");
+
+        document.getElementById("luz-verde").classList.remove("activa");
+
+
+        if (mayorRiesgo === 3) {
+
+            document.getElementById("luz-roja").classList.add("activa");
+
+            document.getElementById("nivel").innerText =
+                "🔴 RIESGO ALTO";
+
+            document.getElementById("recomendacion").innerText =
+                "Urgencia alta: se recomienda activar las rutas de restablecimiento de derechos correspondientes, solicitar atención especializada en salud mental y/o física cuando sea necesario y articular el acompañamiento institucional pertinente.";
+
+        }
+
+
+        else if (mayorRiesgo === 2) {
+
+            document.getElementById("luz-amarilla").classList.add("activa");
+
+            document.getElementById("nivel").innerText =
+                "🟡 RIESGO MEDIO";
+
+            document.getElementById("recomendacion").innerText =
+                "Alerta temprana: se recomienda fortalecer los factores protectores mediante programas de permanencia escolar, prevención del consumo de SPA y acompañamiento psicosocial.";
+
+        }
+
+
+        else {
+
+            document.getElementById("luz-verde").classList.add("activa");
+
+            document.getElementById("nivel").innerText =
+                "🟢 RIESGO BAJO";
+
+            document.getElementById("recomendacion").innerText =
+                "Seguimiento: se recomienda mantener al adolescente vinculado a oportunidades educativas, culturales, deportivas y laborales, fortaleciendo los factores protectores.";
+
+        }
+
+    }
+
+
+    function reiniciar() {
+
+        factores = {
+            educativo: 0,
+            spa: 0,
+            familia: 0,
+            territorio: 0,
+            salud: 0
+        };
+
+
+        document.querySelectorAll("button").forEach(function(boton) {
+
+            boton.classList.remove("seleccionado");
+
+        });
+
+
+        document.getElementById("luz-roja").classList.remove("activa");
+
+        document.getElementById("luz-amarilla").classList.remove("activa");
+
+        document.getElementById("luz-verde").classList.remove("activa");
+
+
+        document.getElementById("nivel").innerText =
+            "Seleccione todos los factores";
+
+        document.getElementById("recomendacion").innerText =
+            "Complete la valoración para obtener una recomendación.";
+
+    }
+
+</script>
+
+</body>
+</html>
